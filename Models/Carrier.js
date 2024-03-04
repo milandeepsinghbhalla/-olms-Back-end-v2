@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const carrierSchema = new mongoose.Schema({
   userId: {
@@ -39,4 +39,4 @@ const carrierSchema = new mongoose.Schema({
 
 const Carrier = mongoose.model("Carrier", carrierSchema);
 
-export default Carrier;
+module.exports =  Carrier;

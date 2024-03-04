@@ -1,0 +1,66 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Open Logistics API",
+    "description": "Description",
+    "version": "1.0.0"
+  },
+  "host": "localhost:7777",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/profile-setup": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "countryCode": {
+                  "example": "any"
+                },
+                "phnNumber": {
+                  "example": "any"
+                },
+                "fullName": {
+                  "example": "any"
+                },
+                "role": {
+                  "example": "any"
+                },
+                "companyName": {
+                  "example": "any"
+                },
+                "streetAddress": {
+                  "example": "any"
+                },
+                "state": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "zipCode": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    }
+  }
+}

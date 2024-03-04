@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const shipperSchema = new mongoose.Schema({
   userId: {
@@ -38,4 +38,4 @@ const shipperSchema = new mongoose.Schema({
 });
 
 const Shipper = mongoose.model("Shipper", shipperSchema);
-export default Shipper;
+module.exports=  Shipper;

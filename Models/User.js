@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -9,9 +9,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  countryCode: {
+    type: String,
+    required: true
+  },
+  number: {
+    type: String,
+    required: true
+  },
+
+
   password: {
     type: String,
-    required: true,
+    default: ''
   },
   companyName: {
     type: String,
@@ -19,16 +30,16 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["Shipper", "Carrier", "Dispatcher", "Broker", "Admin", "Other"],
     required: true,
   },
   companyAddress: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Address',
   },
   supportingDocuments: {
     type: String,
     enum: ["Recieved", "Not-Recieved"],
-    required: true,
+    default: 'Not-Recieved',
   },
   isVerified: {
     type: Boolean,
@@ -39,4 +50,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+module.exports = User;
