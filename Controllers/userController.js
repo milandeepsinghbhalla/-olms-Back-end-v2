@@ -1,10 +1,13 @@
 // import Address from "../Models/Address";
 // import User from "../Models/User";
 
-const Address =  require("../Models/Address");
+const Address = require("../Models/Address");
 const Admin = require("../Models/Admin");
 
 const User = require("../Models/User");
+
+const jwt = require('jsonwebtoken');
+
 
 const mongoose = require('mongoose');
 
@@ -37,7 +40,7 @@ const userController = {
       let userFindResult = await User.find({
         email: req.body.email
       })
-      if(userFindResult.length != 0){
+      if (userFindResult.length != 0) {
         let error = {
           status: 401,
           message: 'User with that email already exists...!!!'
@@ -49,7 +52,7 @@ const userController = {
         countryCode: req.body.countryCode,
         number: req.body.phnNumber
       })
-      if(userFindResult.length != 0){
+      if (userFindResult.length != 0) {
         let error = {
           status: 401,
           message: 'User with that phone number already exists...!!!'
@@ -86,15 +89,15 @@ const userController = {
       foundUser.companyAddress = createdAdress._id;
       const finalUser = await foundUser.save();
       // commit transaction and send response
-      
+
       // await session.commitTransaction();
       // session.endSession();
 
       // send email to user to reply with supporting documents
       // and add the userId to userApprovals in admin and send email notification to admin
-      let admin =  await Admin.findOne({
-        userId:req.body.adminId
-    })
+      let admin = await Admin.findOne({
+        userId: req.body.adminId
+      })
       admin.userApprovals.push(createdUserId);
       let savedAdmin = await admin.save();
       return res.status(201).json({
@@ -102,11 +105,11 @@ const userController = {
         userData: finalUser
       })
     }
-    catch (err){
+    catch (err) {
       // await session.abortTransaction();
       // session.endSession();
 
-      console.log('error- ',err);
+      console.log('error- ', err);
       return res.status(err.status).json({
         message: err.message
       })
@@ -115,15 +118,53 @@ const userController = {
     //   session.endSession();
 
     // }
-    
+
 
   },
-  login: (req, res, next) => {
+  login: async (req, res, next) => {
     // .... all the logic for login
+    //payload
+    // {
+    //   email,
+    //   password
+    // }
+    try {
+
+      let foundUser = await User.findOne({
+        email: req.body.email
+      })
+      if (!foundUser) {
+        let myError = {
+          status: 404,
+          message: 'No user with that email...!!'
+        }
+        throw myError;
+
+      }
+      if (foundUser.password != req.body.password) {
+        let myError = {
+          status: 401,
+          message: 'Wrong Password..!!'
+        }
+        throw myError
+      }
+      const token = jwt.sign({ userId: foundUser._id }, 'your-secret-key', { expiresIn: '10h' });
+
+      return res.status(201).json({
+        token: token,
+        message: 'Logged In Successfully'
+      })
+    }
+    catch (err) {
+      console.log('error- ', err);
+      return res.status(err.status).json({
+        message: err.message
+      })
+    }
   },
   logout: (req, res, next) => {
     // .... all the logic for logout
   },
 };
 
-module.exports =  userController;
+module.exports = userController;

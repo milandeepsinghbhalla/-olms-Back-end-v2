@@ -38,10 +38,10 @@ const adminController = {
         // }
 
         function randomPassword() {
-            console.log(
-                Math.random().toString(36).slice(2) +
+
+            return Math.random().toString(36).slice(2) +
                 Math.random().toString(36)
-                    .toUpperCase().slice(2));
+                    .toUpperCase().slice(2);
         }
         let admin = await Admin.findOne({
             userId: req.body.adminId
@@ -87,7 +87,7 @@ const adminController = {
         for (let userId of req.body.selected) {
             await traverseSelected(userId)
         }
-       
+
 
         return res.json({
             message: 'Approved Succefully...!!'
